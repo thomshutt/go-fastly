@@ -99,3 +99,44 @@ func (c *Client) ListVCLSnippets(i *ListVCLSnippetsInput) ([]*VCLSnippet, error)
 	sort.Stable(snippetsByName(bs))
 	return bs, nil
 }
+
+// DeleteVCLSnippetInput is the input parameter to DeleteVCLSnippet.
+type DeleteVCLSnippetInput struct {
+	// Service is the ID of the service. Version is the specific configuration
+	// version. Both fields are required.
+	Service string
+	Version int
+
+	// Name is the name of the snippet to delete (required).
+	Name string
+}
+
+// DeleteVCLSnippet deletes the VCL snippet with the given name.
+func (c *Client) DeleteVCLSnippet(i *DeleteBackendInput) error {
+	if i.Service == "" {
+		return ErrMissingService
+	}
+
+	if i.Version == 0 {
+		return ErrMissingVersion
+	}
+
+	if i.Name == "" {
+		return ErrMissingName
+	}
+
+	path := fmt.Sprintf("/service/%s/version/%d/snippet/%s", i.Service, i.Version, i.Name)
+	resp, err := c.Delete(path, nil)
+	if err != nil {
+		return err
+	}
+
+	var r *statusResp
+	if err := decodeJSON(&r, resp.Body); err != nil {
+		return err
+	}
+	if !r.Ok() {
+		return fmt.Errorf("Not Ok: %s", r.Msg)
+	}
+	return nil
+}
