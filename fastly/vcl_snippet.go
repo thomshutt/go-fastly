@@ -100,6 +100,82 @@ func (c *Client) ListVCLSnippets(i *ListVCLSnippetsInput) ([]*VCLSnippet, error)
 	return bs, nil
 }
 
+// CreateVCLSnippetInput is used as input to the CreateVCLSnippet function.
+type CreateVCLSnippetInput struct {
+	ServiceID string `mapstructure:"service_id"`
+	Version   int    `mapstructure:"version"`
+
+	Content   string         `mapstructure:"content"`
+	Dynamic   bool           `mapstructure:"dynamic"`
+	ID        string         `mapstructure:"id"`
+	Name      string         `mapstructure:"name"`
+	Priority  uint           `mapstructure:"priority"`
+	Type      VCLSnippetType `mapstructure:"type"`
+}
+
+// CreateVCLSnippet creates a new snippet.
+func (c *Client) CreateVCLSnippet(i *CreateVCLSnippetInput) (*VCLSnippet, error) {
+	if i.ServiceID == "" {
+		return nil, ErrMissingService
+	}
+
+	if i.Version == 0 {
+		return nil, ErrMissingVersion
+	}
+
+	path := fmt.Sprintf("/service/%s/version/%d/snippet", i.ServiceID, i.Version)
+	resp, err := c.PostForm(path, i, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var v *VCLSnippet
+	if err := decodeJSON(&v, resp.Body); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
+// UpdateVCLSnippetInput is used as input to the UpdateVCLSnippet function.
+type UpdateVCLSnippetInput struct {
+	ServiceID string `mapstructure:"service_id"`
+	Version   int    `mapstructure:"version"`
+
+	Content   string         `mapstructure:"content"`
+	Dynamic   bool           `mapstructure:"dynamic"`
+	ID        string         `mapstructure:"id"`
+	Name      string         `mapstructure:"name"`
+	Priority  uint           `mapstructure:"priority"`
+	Type      VCLSnippetType `mapstructure:"type"`
+}
+
+// UpdateVCLSnippet updates a specific snippet.
+func (c *Client) UpdateVCLSnippet(i *UpdateVCLSnippetInput) (*VCLSnippet, error) {
+	if i.ServiceID == "" {
+		return nil, ErrMissingService
+	}
+
+	if i.Version == 0 {
+		return nil, ErrMissingVersion
+	}
+
+	if i.Name == "" {
+		return nil, ErrMissingName
+	}
+
+	path := fmt.Sprintf("/service/%s/version/%d/snippet/%s", i.ServiceID, i.Version, i.Name)
+	resp, err := c.PutForm(path, i, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var v *VCLSnippet
+	if err := decodeJSON(&v, resp.Body); err != nil {
+		return nil, err
+	}
+	return v, nil
+}
+
 // DeleteVCLSnippetInput is the input parameter to DeleteVCLSnippet.
 type DeleteVCLSnippetInput struct {
 	// Service is the ID of the service. Version is the specific configuration
