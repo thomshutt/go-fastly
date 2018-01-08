@@ -112,7 +112,7 @@ type DeleteVCLSnippetInput struct {
 }
 
 // DeleteVCLSnippet deletes the VCL snippet with the given name.
-func (c *Client) DeleteVCLSnippet(i *DeleteBackendInput) error {
+func (c *Client) DeleteVCLSnippet(i *DeleteVCLSnippetInput) error {
 	if i.Service == "" {
 		return ErrMissingService
 	}
