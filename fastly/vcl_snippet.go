@@ -102,15 +102,14 @@ func (c *Client) ListVCLSnippets(i *ListVCLSnippetsInput) ([]*VCLSnippet, error)
 
 // CreateVCLSnippetInput is used as input to the CreateVCLSnippet function.
 type CreateVCLSnippetInput struct {
-	ServiceID string `mapstructure:"service_id"`
-	Version   int    `mapstructure:"version"`
+	ServiceID string `form:"service_id"`
+	Version   int    `form:"version"`
 
-	Content   string         `mapstructure:"content"`
-	Dynamic   bool           `mapstructure:"dynamic"`
-	ID        string         `mapstructure:"id"`
-	Name      string         `mapstructure:"name"`
-	Priority  uint           `mapstructure:"priority"`
-	Type      VCLSnippetType `mapstructure:"type"`
+	Content   string         `form:"content"`
+	Dynamic   bool           `form:"dynamic"`
+	Name      string         `form:"name"`
+	Priority  uint           `form:"priority"`
+	Type      VCLSnippetType `form:"type"`
 }
 
 // CreateVCLSnippet creates a new snippet.
@@ -138,15 +137,15 @@ func (c *Client) CreateVCLSnippet(i *CreateVCLSnippetInput) (*VCLSnippet, error)
 
 // UpdateVCLSnippetInput is used as input to the UpdateVCLSnippet function.
 type UpdateVCLSnippetInput struct {
-	ServiceID string `mapstructure:"service_id"`
-	Version   int    `mapstructure:"version"`
+	ServiceID string `form:"service_id"`
+	Version   int    `form:"version"`
 
-	Content   string         `mapstructure:"content"`
-	Dynamic   bool           `mapstructure:"dynamic"`
-	ID        string         `mapstructure:"id"`
-	Name      string         `mapstructure:"name"`
-	Priority  uint           `mapstructure:"priority"`
-	Type      VCLSnippetType `mapstructure:"type"`
+	Content   string         `form:"content"`
+	Dynamic   bool           `form:"dynamic"`
+	ID        string         `form:"id"`
+	Name      string         `form:"name"`
+	Priority  uint           `form:"priority"`
+	Type      VCLSnippetType `form:"type"`
 }
 
 // UpdateVCLSnippet updates a specific snippet.
