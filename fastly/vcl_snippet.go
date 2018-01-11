@@ -106,7 +106,7 @@ type CreateVCLSnippetInput struct {
 	Version   int    `form:"version"`
 
 	Content   string         `form:"content"`
-	Dynamic   bool           `form:"dynamic"`
+	Dynamic   *Compatibool           `form:"dynamic"`
 	Name      string         `form:"name"`
 	Priority  uint           `form:"priority"`
 	Type      VCLSnippetType `form:"type"`
@@ -141,8 +141,6 @@ type UpdateVCLSnippetInput struct {
 	Version   int    `form:"version"`
 
 	Content   string         `form:"content"`
-	Dynamic   bool           `form:"dynamic"`
-	ID        string         `form:"id"`
 	Name      string         `form:"name"`
 	Priority  uint           `form:"priority"`
 	Type      VCLSnippetType `form:"type"`
